@@ -1,14 +1,28 @@
-name: Preload NhaDatNet
+name: Preload Cache NhaDatNet
 
 on:
   schedule:
-    - cron: '0,15,30,45 * * * *'
-  workflow_dispatch:
+    - cron: '*/5 * * * *'  # Mỗi 5 phút
+  workflow_dispatch:      # Cho phép chạy tay khi cần
 
 jobs:
   preload:
     runs-on: ubuntu-latest
     steps:
-      - name: Preload homepage only
+      - name: Preload important pages
         run: |
-          curl -s -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "https://nhadatnet.com.vn/"
+          declare -a URLS=(
+            "https://nhadatnet.com.vn/"
+            "https://nhadatnet.com.vn/nhu-cau/can-ban/"
+            "https://nhadatnet.com.vn/nhu-cau/cho-thue/"
+            "https://nhadatnet.com.vn/tin-tuc/"
+            "https://nhadatnet.com.vn/ban-do/"
+          )
+
+          for url in "${URLS[@]}"; do
+            echo "Preloading $url"
+            curl -sL \
+              -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
+              "$url" > /dev/null
+            sleep 3
+          done
