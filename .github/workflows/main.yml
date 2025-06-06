@@ -1,4 +1,4 @@
-name: Preload NhaDatNet
+name: Preload NhaDatNet Cache
 
 on:
   schedule:
@@ -9,22 +9,31 @@ jobs:
   preload:
     runs-on: ubuntu-latest
     steps:
-      - name: Preload homepage and key category pages
+      - name: Preload homepage and important pages
         run: |
-          USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-          HEADERS="-H 'Accept-Encoding: gzip, deflate, br' -H 'Cache-Control: max-age=0'"
+          echo "Start cache preload..."
 
-          URLS=(
+          declare -a URLS=(
             "https://nhadatnet.com.vn/"
             "https://nhadatnet.com.vn/nhu-cau/can-ban/"
             "https://nhadatnet.com.vn/nhu-cau/cho-thue/"
+            "https://nhadatnet.com.vn/ban-do/"
           )
 
           for url in "${URLS[@]}"; do
-            echo "Preloading: $url"
-            curl -s -L \
-              -A "$USER_AGENT" \
-              -H "Accept-Encoding: gzip, deflate, br" \
-              -H "Cache-Control: max-age=0" \
+            echo "Loading $url ..."
+            curl -sL \
+              -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
+              -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8" \
+              -H "Accept-Language: en-US,en;q=0.9" \
+              -H "Cache-Control: no-cache" \
+              -H "Pragma: no-cache" \
+              -H "Upgrade-Insecure-Requests: 1" \
+              -H "Connection: keep-alive" \
               "$url" > /dev/null
+
+            # Delay 3s giữa các request để tránh server bỏ qua
+            sleep 3
           done
+
+          echo "Cache preload completed."
