@@ -1,39 +1,14 @@
-name: Preload NhaDatNet Cache
+name: Preload NhaDatNet
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Chạy mỗi 5 phút
+    - cron: '0,15,30,45 * * * *'
   workflow_dispatch:
 
 jobs:
   preload:
     runs-on: ubuntu-latest
     steps:
-      - name: Preload homepage and important pages
+      - name: Preload homepage only
         run: |
-          echo "Start cache preload..."
-
-          declare -a URLS=(
-            "https://nhadatnet.com.vn/"
-            "https://nhadatnet.com.vn/nhu-cau/can-ban/"
-            "https://nhadatnet.com.vn/nhu-cau/cho-thue/"
-            "https://nhadatnet.com.vn/ban-do/"
-          )
-
-          for url in "${URLS[@]}"; do
-            echo "Loading $url ..."
-            curl -sL \
-              -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
-              -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8" \
-              -H "Accept-Language: en-US,en;q=0.9" \
-              -H "Cache-Control: no-cache" \
-              -H "Pragma: no-cache" \
-              -H "Upgrade-Insecure-Requests: 1" \
-              -H "Connection: keep-alive" \
-              "$url" > /dev/null
-
-            # Delay 3s giữa các request để tránh server bỏ qua
-            sleep 3
-          done
-
-          echo "Cache preload completed."
+          curl -s -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "https://nhadatnet.com.vn/"
