@@ -12,5 +12,3 @@ jobs:
       - name: Preload homepage and key category pages
         run: |
           timeout 5 curl -s -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "https://nhadatnet.com.vn/" > /dev/null
-          timeout 5 curl -s -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "https://nhadatnet.com.vn/nhu-cau/can-ban/" > /dev/null
-          timeout 5 curl -s -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" "https://nhadatnet.com.vn/nhu-cau/cho-thue/" > /dev/null
