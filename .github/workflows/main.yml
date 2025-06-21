@@ -2,7 +2,7 @@ name: Preload NhaDatNet
 
 on:
   schedule:
-    - cron: '*1/5 * * * *'  # Chạy mỗi 5 phút
+    - cron: '*/15 * * * *'  # Chạy mỗi 5 phút
   workflow_dispatch:
 
 jobs:
